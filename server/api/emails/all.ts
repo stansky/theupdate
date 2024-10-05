@@ -6,16 +6,12 @@ import mysql from 'mysql2/promise'
 export default defineEventHandler(async (event) => {
   const { MYSQL_HOST, MYSQL_USER, MYSQL_PASSWORD, MYSQL_DB_NAME } = process.env;
 
-  console.log('MYSQL_HOST:', process.env.MYSQL_HOST);
-  console.log('MYSQL_USER:', process.env.MYSQL_USER);
-  console.log('MYSQL_DB_NAME:', process.env.MYSQL_DB_NAME);
-
   // Create MySQL connection
   const connection = await mysql.createConnection({
-    host: secret(MYSQL_HOST),
-    user: secret(MYSQL_USER),
-    password: secret(MYSQL_PASSWORD),
-    database: secret(MYSQL_DB_NAME)
+    host: await secret('MYSQL_HOST').toString(),
+    user: await secret('MYSQL_USER').toString(),
+    password: await secret('MYSQL_PASSWORD').toString(),
+    database: await secret('MYSQL_DB_NAME').toString()
   });
 
   // Query to get all emails without any time filter

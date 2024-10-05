@@ -7,10 +7,10 @@ export default defineEventHandler(async (event) => {
 
   // Create MySQL connection
   const connection = await mysql.createConnection({
-    host: secret(MYSQL_HOST),
-    user: secret(MYSQL_USER),
-    password: secret(MYSQL_PASSWORD),
-    database: secret(MYSQL_DB_NAME)
+    host: await secret('MYSQL_HOST').toString(),
+    user: await secret('MYSQL_USER').toString(),
+    password: await secret('MYSQL_PASSWORD').toString(),
+    database: await secret('MYSQL_DB_NAME').toString()
   });
 
   // Query to get today's emails (UTC converted to PST)
