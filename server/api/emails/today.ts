@@ -1,3 +1,5 @@
+import { defineAuth, secret } from '@aws-amplify/backend';
+
 import { defineEventHandler } from 'h3'
 import mysql from 'mysql2/promise'
 
