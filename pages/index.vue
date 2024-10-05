@@ -35,7 +35,7 @@
         <ul class="space-y-4">
           <li v-for="email in monthsEmails" :key="email.id">
             <NuxtLink :to="`/email/${email.id}`" class="text-indigo-600 hover:underline">
-              {{ email.date_received }} - {{ email.subject }}
+             {{ email.subject }}
             </NuxtLink>
           </li>
         </ul>
