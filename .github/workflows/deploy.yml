@@ -1,0 +1,78 @@
+on:
+    push:
+      branches:
+        - main
+  
+  jobs:
+    build-and-deploy:
+      name: Build and Deploy
+      runs-on: ubuntu-latest
+      env:
+        APP_NAME: "theupdate.fyi"
+      
+      steps:
+        - name: Checkout Code
+          uses: actions/checkout@v3
+          with:
+            fetch-depth: 0
+  
+        - name: Setup Tailscale
+          uses: tailscale/github-action@v2
+          with:
+            hostname: Github-actions
+            oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
+            oauth-secret: ${{ secrets.TS_OAUTH_SECRET }}
+            tags: tag:ci
+  
+        - name: Remove git directory
+          run: |
+            echo "Removing .git directory..."
+            rm -rf  ${{ github.workspace }}/.git
+            rm -rf  ${{ github.workspace }}/home
+  
+        - name: Create Deployment Directory
+          run: |
+            echo "Creating deployment directory /var/www/${{ env.APP_NAME }}..."
+            tailscale ssh stansky@piserve "
+              sudo mkdir -p /var/www/${{ env.APP_NAME }} &&
+              sudo chown -R stansky:stansky /var/www/${{ env.APP_NAME }} &&
+              sudo chmod -R 775 /var/www/${{ env.APP_NAME }}
+            "
+  
+        - name: Create env file
+          run: |
+            tailscale ssh stansky@piserve << EOF
+            touch /var/www/${{ env.APP_NAME }}/.env
+            echo "MYSQL_HOST='${{ secrets.MYSQL_HOST }}'" > /var/www/${{ env.APP_NAME }}/.env
+            echo "MYSQL_USER='${{ secrets.MYSQL_USER }}'" >> /var/www/${{ env.APP_NAME }}/.env
+            echo "MYSQL_PASSWORD='${{ secrets.MYSQL_PASSWORD }}'" >> /var/www/${{ env.APP_NAME }}/.env
+            echo "MYSQL_DB_NAME='${{ secrets.MYSQL_DB_NAME }}'" >> /var/www/${{ env.APP_NAME }}/.env
+            EOF
+  
+        - name: Move directories and files
+          run: |
+            tar -czf - -C ${{ github.workspace }} . | tailscale ssh stansky@piserve "sudo tar -xzf - -C /var/www/${{ env.APP_NAME }}"
+            
+        - name: Verify Deployment Files
+          run: |
+            echo "Verifying that the files were correctly deployed..."
+            tailscale ssh stansky@piserve "ls -la /var/www/${{ env.APP_NAME }}"
+  
+        - name: Install Node.js and Dependencies
+          run: |
+            echo "Installing Node.js and project dependencies..."
+            tailscale ssh stansky@piserve "
+              cd /var/www/${{ env.APP_NAME }} &&
+              curl -sL https://deb.nodesource.com/setup_18.x | sudo -E bash - &&
+              sudo apt-get install -y nodejs &&
+              npm install &&
+              npm run build
+            "
+  
+        - name: Start Application
+          run: |
+            tailscale ssh stansky@piserve "
+              cd /var/www/${{ env.APP_NAME }} &&
+              npm run start
+            "
+  
