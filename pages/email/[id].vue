@@ -7,10 +7,10 @@
     <main class="flex-1 container mx-auto p-6">
       <section class="bg-white shadow-md rounded-lg p-6">
         <h2 class="text-3xl font-semibold mb-4">{{ email.subject }}</h2>
-        <div class="mb-4 text-gray-600">
+        <!-- <div class="mb-4 text-gray-600">
           <p><strong>From:</strong> {{ email.sender }}</p>
           <p><strong>Date:</strong> {{ email.date_received }}</p>
-        </div>
+        </div> -->
         <div class="prose max-w-none" v-html="email.body"></div>
       </section>
     </main>

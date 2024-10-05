@@ -1,7 +1,7 @@
 <template>
   <div class="min-h-screen bg-gray-100 flex flex-col">
     <header class="bg-indigo-600 text-white py-4 px-6 shadow-lg">
-      <h1 class="text-3xl font-bold">Email Dashboard</h1>
+      <h1 class="text-3xl font-bold">Archived Newsletters</h1>
     </header>
 
     <main class="flex-1 container mx-auto p-6">
@@ -55,7 +55,7 @@
     </main>
 
     <footer class="bg-gray-800 text-white py-4 text-center">
-      <p>&copy; 2024 Email Dashboard. All rights reserved.</p>
+      <p>Displaying {{ allEmails.length }} emails starting from {{ earliestSentDate || 'N/A' }}</p>
     </footer>
 
     <NuxtPage />
@@ -67,4 +67,17 @@ const { data: todaysEmails } = await useFetch('/api/emails/today')
 const { data: weeksEmails } = await useFetch('/api/emails/week')
 const { data: monthsEmails } = await useFetch('/api/emails/month')
 const { data: allEmails } = await useFetch('/api/emails/all')
+
+const earliestSentDate = computed(() => {
+  if (allEmails.value.length === 0) return null;
+
+  const earliestEmail = allEmails.value.reduce((earliest, email) => {
+    const emailDate = new Date(email.date_received);
+    return emailDate < new Date(earliest.date_received) ? email : earliest;
+  });
+
+  return new Date(earliestEmail.date_received).toLocaleDateString('en-US', {
+    year: 'numeric', month: 'long', day: 'numeric'
+  });
+});
 </script>
