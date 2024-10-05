@@ -4,15 +4,15 @@
       <h1 class="text-3xl font-bold">Archived Newsletters</h1>
     </header>
 
-    <main class="flex-1 container mx-auto p-6 grid grid-cols-2 sm:grid-cols-1 gap-4">
+    <main class="flex-1 container mx-auto p-6 grid grid-cols-1 sm:grid-cols-1 gap-4">
       <!-- Today's Emails Section -->
-      <section class="bg-white shadow-md rounded-lg mb-6 p-6 col-6">
+      <section class="bg-white shadow-md rounded-lg mb-6 p-6 col-6" v-if="todaysEmails?.length">
         <h2 class="text-2xl font-semibold mb-4 border-b pb-2">Today's Emails</h2>
         <div v-for="(emails, tag) in groupedEmails(todaysEmails)" :key="tag" class="mb-4">
           <ul class="space-y-2">
             <li v-for="email in emails" :key="email.id">
               <NuxtLink :to="`/email/${email.id}`" class="text-indigo-600 hover:underline">
-                {{ email.subject }} <span class="text-gray-600">({{ tag }})</span>
+                {{ email.subject }} 
               </NuxtLink>
              <span class="bg-green-600 text-white px-3 py-1 rounded-full text-sm ml-3 ">{{ tag }}</span>
             </li>
@@ -22,14 +22,14 @@
       <!-- This Week's Emails Section -->
       <section class="bg-white shadow-md rounded-lg mb-6 p-6">
         <h2 class="text-2xl font-semibold mb-4 border-b pb-2">This Week's Emails</h2>
-        <div v-for="(emails, tag) in groupedEmails(weeksEmails)" :key="tag" class="mb-4">
-          <div class="flex items-center mb-2">
+        <div v-for="(emails, tag) in groupedEmails(weeksEmails)" :key="tag" class="mb-10">
+          <div class="flex items-center m mb-2">
             <span class="bg-indigo-600 text-white px-3 py-1 rounded-full text-sm">{{ tag }}</span>
           </div>
-          <ul class="space-y-2">
+          <ul class="space-y-3">
             <li v-for="email in emails" :key="email.id">
               <NuxtLink :to="`/email/${email.id}`" class="text-indigo-600 hover:underline">
-                {{ email.subject }} <span class="text-gray-600">({{ tag }})</span>
+                {{ email.subject }} 
               </NuxtLink>
             </li>
           </ul>
@@ -48,7 +48,7 @@
           <ul class="space-y-2">
             <li v-for="email in emails" :key="email.id">
               <NuxtLink :to="`/email/${email.id}`" class="text-indigo-600 hover:underline">
-                {{ email.subject }} <span class="text-gray-600">({{ tag }})</span>
+                {{ email.subject }} 
               </NuxtLink>
             </li>
           </ul>
@@ -65,7 +65,7 @@
           <ul class="space-y-2">
             <li v-for="email in emails" :key="email.id">
               <NuxtLink :to="`/email/${email.id}`" class="text-indigo-600 hover:underline">
-                {{ email.subject }} <span class="text-gray-600">({{ tag }})</span>
+                {{ email.subject }} 
               </NuxtLink>
               <span class="text-gray-500 text-sm"> - {{ new Date(email.date_received).toLocaleDateString() }}</span>
             </li>
