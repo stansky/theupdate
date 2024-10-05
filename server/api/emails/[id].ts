@@ -22,10 +22,10 @@ export default defineEventHandler(async (event) => {
   
   const { id } = params; // Get the email ID from the URL params
   const connection = await mysql.createConnection({
-    host: MYSQL_HOST,
-    user: MYSQL_USER,
-    password: MYSQL_PASSWORD,
-    database: MYSQL_DB_NAME
+    host: secret(MYSQL_HOST),
+    user: secret(MYSQL_USER),
+    password: secret(MYSQL_PASSWORD),
+    database: secret(MYSQL_DB_NAME)
   });
 
   // Query to fetch the email by ID

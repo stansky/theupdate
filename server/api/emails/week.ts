@@ -1,3 +1,5 @@
+import { defineAuth, secret } from '@aws-amplify/backend';
+
 import { defineEventHandler } from 'h3'
 import mysql from 'mysql2/promise'
 
@@ -5,10 +7,10 @@ export default defineEventHandler(async (event) => {
   const { MYSQL_HOST, MYSQL_USER, MYSQL_PASSWORD, MYSQL_DB_NAME } = process.env;
 
   const connection = await mysql.createConnection({
-    host: MYSQL_HOST,
-    user: MYSQL_USER,
-    password: MYSQL_PASSWORD,
-    database: MYSQL_DB_NAME
+    host: secret(MYSQL_HOST),
+    user: secret(MYSQL_USER),
+    password: secret(MYSQL_PASSWORD),
+    database: secret(MYSQL_DB_NAME)
   });
 
   const query = `
