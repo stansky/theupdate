@@ -8,7 +8,7 @@ jobs:
     name: Build and Deploy
     runs-on: ubuntu-latest
     env:
-      APP_NAME: "bytecrunch-emails"
+      APP_NAME: "theupdate.fyi"
     
     steps:
       - name: Checkout Code
@@ -58,6 +58,15 @@ jobs:
           echo "Verifying that the files were correctly deployed..."
           tailscale ssh stansky@piserve "ls -la /var/www/${{ env.APP_NAME }}"
 
+
+      - name: Set Permissions on Deployment Directory
+        run: |
+          echo "Setting correct permissions on /var/www/${{ env.APP_NAME }}..."
+          tailscale ssh stansky@piserve "
+            sudo chown -R stansky:stansky /var/www/${{ env.APP_NAME }} &&
+            sudo chmod -R 775 /var/www/${{ env.APP_NAME }}
+          "
+        
       - name: Install Node.js and Dependencies
         run: |
           echo "Installing Node.js and project dependencies..."
