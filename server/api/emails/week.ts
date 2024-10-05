@@ -11,6 +11,11 @@ export default defineEventHandler(async (event) => {
     database: MYSQL_DB_NAME
   });
 
+  console.log('MYSQL_HOST:', process.env.MYSQL_HOST);
+console.log('MYSQL_USER:', process.env.MYSQL_USER);
+console.log('MYSQL_DB_NAME:', process.env.MYSQL_DB_NAME);
+
+
   const query = `
     SELECT * FROM emails 
     WHERE DATE(CONVERT_TZ(date_received, '+00:00', '-08:00')) 
