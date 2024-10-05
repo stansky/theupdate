@@ -13,7 +13,7 @@ export default defineEventHandler(async (event) => {
   });
 
   // Query to get all emails without any time filter
-  const query = `SELECT * FROM emails`;
+  const query = `SELECT id, sender, subject, date_received FROM emails`;
 
   try {
     const [rows] = await connection.execute(query);

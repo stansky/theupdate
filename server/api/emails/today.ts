@@ -15,7 +15,7 @@ export default defineEventHandler(async (event) => {
 
   // Query to get today's emails (UTC converted to PST)
   const query = `
-    SELECT * FROM emails 
+    SELECT id, sender, subject, date_received FROM emails 
     WHERE DATE(CONVERT_TZ(date_received, '+00:00', '-08:00')) = CURDATE()
   `;
 

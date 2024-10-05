@@ -12,7 +12,7 @@ export default defineEventHandler(async (event) => {
   });
 
   const query = `
-    SELECT * FROM emails 
+    SELECT id, sender, subject, date_received FROM emails 
     WHERE DATE(CONVERT_TZ(date_received, '+00:00', '-08:00')) 
     BETWEEN CURDATE() - INTERVAL 30 DAY AND CURDATE()
   `;
