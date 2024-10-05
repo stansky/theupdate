@@ -82,5 +82,11 @@ jobs:
         run: |
           tailscale ssh stansky@piserve "
             cd /var/www/${{ env.APP_NAME }} &&
+            # Find and kill any process running on port 3000
+            if lsof -t -i:3000 > /dev/null; then
+              echo 'Killing existing process on port 3000...'
+              sudo kill -9 \$(lsof -t -i:3000)
+            fi
+            # Start the application
             npm run start
           "
