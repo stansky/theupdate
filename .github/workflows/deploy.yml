@@ -88,5 +88,5 @@ jobs:
               sudo kill -9 \$(lsof -t -i:3000)
             fi
             # Start the application
-            npm run build && node .output/server/index.mjs
+            nohup npm run start &
           "
