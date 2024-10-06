@@ -6,7 +6,7 @@
 
     <main class="flex-1 container mx-auto p-6 grid grid-cols-1 sm:grid-cols-1 gap-4">
       <!-- Today's Emails Section -->
-      <section class="bg-white shadow-md rounded-lg mb-6 p-6 col-6" v-if="todaysEmails?.length">
+      <section class="bg-white shadow-md rounded-lg mb-6 p-6 col-6" v-if="todaysEmails">
         <h2 class="text-2xl font-semibold mb-4 border-b pb-2">Today's Emails</h2>
         <div v-for="(emails, tag) in groupedEmails(todaysEmails)" :key="tag" class="mb-4">
           <ul class="space-y-2">
