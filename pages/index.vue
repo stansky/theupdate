@@ -1,7 +1,7 @@
 <template>
   <div class="min-h-screen bg-gray-100 flex flex-col">
     <header class="bg-indigo-600 text-white py-4 px-6 shadow-lg">
-      <h1 class="text-3xl font-bold">Archived Newsletters</h1>
+      <h1 class="text-3xl font-bold">Newsletters</h1>
     </header>
 
     <main class="flex-1 container mx-auto p-6 grid grid-cols-1 sm:grid-cols-1 gap-4">
