@@ -13,7 +13,10 @@ export default defineNuxtConfig({
     transpile: [],
   },
 
-  // Enable dev tools for development
+  devServer: {
+    port: 3001,
+  },
+
   devtools: { enabled: true },
 
   compatibilityDate: '2024-10-04'
